@@ -5,6 +5,7 @@
 #ifndef UNTITLED3_HTTPTEST_H
 #define UNTITLED3_HTTPTEST_H
 
+#include <fmt/core.h>
 #include <httplib.h>
 
 class httptest {
@@ -13,8 +14,10 @@ public:
         httplib::Headers headers = {
                 {"Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImRkM2Q4MjE5LWU4NmUtNDk2Ny1hMTBlLTVmNjcwOWU4Nzc3NyJ9.X8ylMdAJPKv5ZUkbSomXoJFqDwVf-hfLTaCX6me9b2oDKyfLsBAVmo9oHIN2HofWf_bdM-bLbEkK11042vtynw"}
         };
-        httplib::Client cli("101.200.79.90", 80);
-        if (auto res = cli.Get("/prod-api/system/user/list?pageNum=1&pageSize=10",headers)) {
+        std::string url = fmt::format("/users/offset/{}/limit/{}", 0, 1);
+
+        httplib::Client cli("localhost", 8000);
+        if (auto res = cli.Get(url.c_str())) {
             if (res->status == 200) {
                 std::cout << res->body << std::endl;
             }
